@@ -1,4 +1,4 @@
-# **EduBoard **
+# EduBoard 
 
 **EduBoard** este o aplicație web modernă de tip **LMS (Learning Management System)**, concepută pentru a digitaliza și eficientiza interacțiunea dintre profesori și elevi. Platforma integrează unelte de colaborare vizuală (Whiteboard) și un asistent educațional bazat pe Inteligență Artificială (OpenAI).** Arhitectura Sistemului**
 
@@ -104,13 +104,11 @@ Pentru a rula proiectul, urmați pașii de mai jos.
 
 ### **Pasul 1: Configurare Backend**
 
-Navigați în folderul serverului: \
-cd backend
+Navigați în folderul pt server: 
+\cd backend
 
 1.Creați și activați mediul virtual:
 
-
-     \
 python -m venv .venv
 
 
