@@ -15,21 +15,21 @@ export default function TeacherWhiteboardEditor() {
   const [color, setColor] = useState("#000000");
   const [size, setSize] = useState(3);
   const [tool, setTool] = useState<"pen" | "eraser">("pen");
-
-  /* ----------------------------------
-     Load Initial Board
-  ---------------------------------- */
+  const [saving, setSaving] = useState(false);
+ 
   useEffect(() => {
     if (!id) return;
-
-    api.get<Whiteboard>(`/whiteboard/${id}`).then((res) => {
-      setStrokes(res.data.strokes ?? []);
-    });
+    
+    // FIX: URL plural
+    api.get<Whiteboard>(`/whiteboards/${id}`)
+      .then((res) => {
+        // Dacă există desene salvate, le punem pe tablă
+        setStrokes(res.data.strokes ?? []);
+      })
+      .catch(err => console.error("Eroare la încărcarea tablei:", err));
   }, [id]);
 
-  /* ----------------------------------
-     Draw everything
-  ---------------------------------- */
+ 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -53,19 +53,13 @@ export default function TeacherWhiteboardEditor() {
       ctx.stroke();
     };
 
-    // Draw saved strokes
     strokes.forEach(drawStroke);
 
-    // Draw the current stroke live
     if (currentStroke) {
       drawStroke(currentStroke);
     }
-
   }, [strokes, currentStroke]);
 
-  /* ----------------------------------
-     Helpers
-  ---------------------------------- */
   const getXY = (e: MouseEvent): Point => {
     const rect = canvasRef.current!.getBoundingClientRect();
     return {
@@ -74,12 +68,8 @@ export default function TeacherWhiteboardEditor() {
     };
   };
 
-  /* ----------------------------------
-     Mouse Events
-  ---------------------------------- */
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const p = getXY(e.nativeEvent);
-
     setCurrentStroke({
       points: [p],
       color,
@@ -90,37 +80,24 @@ export default function TeacherWhiteboardEditor() {
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!currentStroke) return;
-
     const p = getXY(e.nativeEvent);
-
-    // smooth strokes a bit
-    const previous = currentStroke.points[currentStroke.points.length - 1];
-    const dist = Math.hypot(p.x - previous.x, p.y - previous.y);
-
-    if (dist > 1) {
-      currentStroke.points.push(p);
-      setCurrentStroke({ ...currentStroke });
-    }
+    currentStroke.points.push(p);
+    setCurrentStroke({ ...currentStroke }); 
   };
 
   const endDrawing = () => {
     if (currentStroke) {
       setStrokes((prev) => [...prev, currentStroke]);
-      setRedoStack([]); // clear redo stack
+      setRedoStack([]);
       setCurrentStroke(null);
     }
   };
 
-  /* ----------------------------------
-     Undo / Redo
-  ---------------------------------- */
   const undo = () => {
     setStrokes((prev) => {
       if (prev.length === 0) return prev;
-
       const lastStroke = prev[prev.length - 1];
       setRedoStack((r) => [...r, lastStroke]);
-
       return prev.slice(0, -1);
     });
   };
@@ -128,161 +105,104 @@ export default function TeacherWhiteboardEditor() {
   const redo = () => {
     setRedoStack((prev) => {
       if (prev.length === 0) return prev;
-
       const last = prev[prev.length - 1];
       setStrokes((s) => [...s, last]);
-
       return prev.slice(0, -1);
     });
   };
 
-  /* ----------------------------------
-     Save to backend
-  ---------------------------------- */
+ 
   const saveBoard = async () => {
     if (!id) return;
-    await api.post(`/whiteboard/${id}/save`, { strokes });
-    alert("Saved!");
+    setSaving(true);
+    try {
+        
+        await api.post(`/whiteboards/${id}/save`, { strokes });
+       
+    } catch (e) {
+        alert("Eroare la salvare!");
+    } finally {
+        setSaving(false);
+    }
   };
 
-  /* ----------------------------------
-     Auto-save (every 8s)
-  ---------------------------------- */
   useEffect(() => {
-    if (!id) return;
-
+    if (!id || strokes.length === 0) return;
     const interval = setInterval(() => {
-      api.post(`/whiteboard/${id}/save`, { strokes });
-    }, 8000);
-
+      saveBoard();
+    }, 5000);
     return () => clearInterval(interval);
   }, [strokes, id]);
 
-  /* ----------------------------------
-     Export as PNG
-  ---------------------------------- */
+
   const exportPNG = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const url = canvas.toDataURL("image/png");
-
     const link = document.createElement("a");
     link.href = url;
     link.download = "whiteboard.png";
     link.click();
   };
 
-  /* ----------------------------------
-     UI + Canvas
-  ---------------------------------- */
   return (
     <div style={{ fontFamily: "Inter, sans-serif" }}>
       <TeacherNavbar />
 
       <div style={{ display: "flex", padding: "20px", gap: "20px" }}>
-
-        {/* Toolbar */}
+        {}
         <div style={{ width: "160px" }}>
           <h3 style={{ marginBottom: "10px" }}>Tools</h3>
 
-          <button
-            onClick={() => setTool("pen")}
-            style={tool === "pen" ? activeBtn : inactiveBtn}
-          >
-            Pen
-          </button>
-
-          <button
-            onClick={() => setTool("eraser")}
-            style={tool === "eraser" ? activeBtn : inactiveBtn}
-          >
-            Eraser
-          </button>
-
-          <br /><br />
+          <div style={{marginBottom: 20}}>
+            <button onClick={() => setTool("pen")} style={tool === "pen" ? activeBtn : inactiveBtn}>Pen</button>
+            <button onClick={() => setTool("eraser")} style={tool === "eraser" ? activeBtn : inactiveBtn}>Eraser</button>
+          </div>
 
           <label>Color</label>
-          <input
-            type="color"
-            value={color}
-            disabled={tool === "eraser"}
-            onChange={(e) => setColor(e.target.value)}
-          />
+          <input type="color" value={color} onChange={(e) => setColor(e.target.value)} disabled={tool==="eraser"} />
+          
           <br /><br />
-
-          <label>Size</label>
-          <input
-            type="range"
-            min={1}
-            max={20}
-            value={size}
-            onChange={(e) => setSize(Number(e.target.value))}
-          />
+          <label>Size: {size}px</label>
+          <input type="range" min={1} max={20} value={size} onChange={(e) => setSize(Number(e.target.value))} />
 
           <br /><br />
-
           <button onClick={undo} style={inactiveBtn}>Undo</button>
-          <button
-            onClick={redo}
-            disabled={redoStack.length === 0}
-            style={inactiveBtn}
-            >
-            Redo
-            </button>
+          <button onClick={redo} disabled={redoStack.length===0} style={inactiveBtn}>Redo</button>
 
-
-          <br /><br />
-
-          <button onClick={saveBoard} style={activeBtn}>Save</button>
-
-          <br /><br />
-
-          <button onClick={exportPNG} style={inactiveBtn}>Export PNG</button>
+          <div style={{marginTop: "30px", borderTop: "1px solid #ccc", paddingTop: "20px"}}>
+             <button onClick={saveBoard} style={{...activeBtn, background: saving ? "#ccc" : "#28a745"}}>
+                {saving ? "Saving..." : "💾 Save Board"}
+             </button>
+             <button onClick={exportPNG} style={inactiveBtn}>🖼️ Export PNG</button>
+          </div>
         </div>
 
-        {/* Canvas */}
-        <canvas
-          ref={canvasRef}
-          width={1000}
-          height={600}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={endDrawing}
-          onMouseLeave={endDrawing}
-          style={{
-            border: "1px solid #ccc",
-            background: "white",
-            cursor: tool === "eraser" ? "not-allowed" : "crosshair",
-          }}
-        />
+        {}
+        <div style={{position: 'relative', border: "1px solid #ccc", boxShadow: "0 4px 6px rgba(0,0,0,0.1)"}}>
+            <canvas
+            ref={canvasRef}
+            width={1000}
+            height={600}
+            onMouseDown={startDrawing}
+            onMouseMove={draw}
+            onMouseUp={endDrawing}
+            onMouseLeave={endDrawing}
+            style={{
+                background: "white",
+                cursor: tool === "eraser" ? "not-allowed" : "crosshair",
+                display: "block"
+            }}
+            />
+        </div>
       </div>
     </div>
   );
 }
 
-/* ------------------------------
-   Style Helpers
------------------------------- */
-
 const activeBtn: React.CSSProperties = {
-  width: "100%",
-  padding: "8px",
-  background: "black",
-  color: "white",
-  borderRadius: "6px",
-  border: "none",
-  cursor: "pointer",
-  marginBottom: "6px",
+  width: "100%", padding: "8px", background: "black", color: "white", borderRadius: "6px", border: "none", cursor: "pointer", marginBottom: "6px",
 };
-
 const inactiveBtn: React.CSSProperties = {
-  width: "100%",
-  padding: "8px",
-  background: "#f0f0f0",
-  color: "black",
-  borderRadius: "6px",
-  border: "1px solid #ddd",
-  cursor: "pointer",
-  marginBottom: "6px",
+  width: "100%", padding: "8px", background: "#f0f0f0", color: "black", borderRadius: "6px", border: "1px solid #ddd", cursor: "pointer", marginBottom: "6px",
 };

@@ -12,7 +12,7 @@ interface Props {
 export default function AuthLayout({ title, subtitle, children, image }: Props) {
   return (
     <>
-      {/* NEW NAVBAR */}
+      {}
       <AuthNavbar />
 
       <Container
@@ -21,12 +21,12 @@ export default function AuthLayout({ title, subtitle, children, image }: Props) 
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "85vh",          // center vertically
+          height: "85vh",          
           gap: 10,
-          mt: -4,                  // lift everything slightly up
+          mt: -4,                 
         }}
       >
-        {/* LEFT SIDE CONTENT */}
+        {}
         <Box sx={{ flex: 1, textAlign: "left" }}>
           <Typography variant="h3" fontWeight={700} sx={{ mb: 2 }}>
             {title}
@@ -41,7 +41,7 @@ export default function AuthLayout({ title, subtitle, children, image }: Props) 
           {children}
         </Box>
 
-        {/* RIGHT SIDE IMAGE */}
+        {}
         <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <img
             src={image}

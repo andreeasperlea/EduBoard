@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from typing import Optional
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "EduBoard Backend"
@@ -11,6 +12,10 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "CHANGE_ME"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
+
+
+    #OPEN AI
+    openai_api_key: Optional[str] = None
 
     class Config:
         env_file = ".env"

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import type { Whiteboard } from "../types/whiteboard";
 import TeacherNavbar from "../components/TeacherNavbar";
@@ -6,13 +7,15 @@ import TeacherNavbar from "../components/TeacherNavbar";
 export default function TeacherWhiteboardList() {
   const [boards, setBoards] = useState<Whiteboard[]>([]);
   const [name, setName] = useState("");
+  const navigate = useNavigate(); 
 
-  // Load whiteboards on page load
+  // Load whiteboards
   useEffect(() => {
-    api.get<Whiteboard[]>("/whiteboard").then((res) => setBoards(res.data));
+   
+    api.get<Whiteboard[]>("/whiteboards").then((res) => setBoards(res.data));
   }, []);
 
-  // Create a new whiteboard
+  // Create
   const createBoard = async () => {
     if (!name.trim()) {
       alert("Please enter a whiteboard name.");
@@ -20,25 +23,25 @@ export default function TeacherWhiteboardList() {
     }
 
     try {
-      const { data } = await api.post<Whiteboard>("/whiteboard", {
+      const { data } = await api.post<Whiteboard>("/whiteboards", {
         name,
       });
-
-      window.location.href = `/teacher/whiteboard/${data.id}`;
+  
+      navigate(`/teacher/whiteboard/${data.id}`);
     } catch (err) {
       console.error(err);
       alert("Could not create whiteboard.");
     }
   };
 
-  // Delete a whiteboard
   const deleteBoard = async (id: string) => {
     const confirmDelete = confirm("Delete this whiteboard?");
     if (!confirmDelete) return;
 
     try {
-      await api.delete(`/whiteboard/${id}`);
-      setBoards((prev) => prev.filter((b) => b.id !== id)); // remove from UI
+     
+      await api.delete(`/whiteboards/${id}`);
+      setBoards((prev) => prev.filter((b) => b.id !== id)); 
     } catch (err) {
       console.error(err);
       alert("Could not delete whiteboard.");
@@ -54,7 +57,7 @@ export default function TeacherWhiteboardList() {
           Your Whiteboards
         </h1>
 
-        {/* Create section */}
+        {}
         <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
           <input
             placeholder="Whiteboard name"
@@ -82,7 +85,9 @@ export default function TeacherWhiteboardList() {
           </button>
         </div>
 
-        {/* Whiteboard list */}
+        {}
+        {boards.length === 0 && <p>No whiteboards yet. Create one!</p>}
+        
         {boards.map((b) => (
           <div
             key={b.id}
@@ -94,18 +99,13 @@ export default function TeacherWhiteboardList() {
               borderBottom: "1px solid #eee",
             }}
           >
-            {/* Whiteboard name */}
             <div
-              onClick={() => (window.location.href = `/teacher/whiteboard/${b.id}`)}
-              style={{
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
+              onClick={() => navigate(`/teacher/whiteboard/${b.id}`)}
+              style={{ cursor: "pointer", fontSize: "16px", fontWeight: "500" }}
             >
-              {b.name}
+              📂 {b.name}
             </div>
 
-            {/* Delete button */}
             <button
               onClick={() => deleteBoard(b.id)}
               style={{

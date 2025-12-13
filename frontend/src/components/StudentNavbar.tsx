@@ -1,12 +1,22 @@
+import { Link, useNavigate } from "react-router-dom";
 import useCurrentUser from "../hooks/useCurrentUser";
 
 export default function StudentNavbar() {
   const user = useCurrentUser();
+  const navigate = useNavigate();
+
   if (!user) return null;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    navigate("/");
+  };
+
+  const linkStyle = {
+    textDecoration: "none",
+    color: "#000",
+    fontWeight: 500,
+    cursor: "pointer",
   };
 
   return (
@@ -24,43 +34,33 @@ export default function StudentNavbar() {
         boxSizing: "border-box",
       }}
     >
-      {/* LEFT: logo + links */}
+      {}
       <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
-        <h2
-          style={{
-            margin: 0,
-            fontWeight: 700,
-            fontSize: "22px",
-          }}
-        >
+        <h2 style={{ margin: 0, fontWeight: 700, fontSize: "22px" }}>
           EduBoard
         </h2>
 
         <div style={{ display: "flex", gap: "28px" }}>
-          <a
-            href="/student"
-            style={{
-              textDecoration: "none",
-              color: "#000",
-              fontWeight: 500,
-            }}
-          >
+          <Link to="/student" style={linkStyle}>
             Home
-          </a>
-          <a
-            href="/student/classes"
-            style={{
-              textDecoration: "none",
-              color: "#000",
-              fontWeight: 500,
-            }}
-          >
+          </Link>
+          
+          <Link to="/classes" style={linkStyle}>
             Classes
-          </a>
+          </Link>
+
+          {}
+          <Link to="/teacher/whiteboard" style={linkStyle}>
+            My Whiteboards
+          </Link>
+
+          <Link to="/ai-assistant" style={{...linkStyle, color: "#6f42c1", fontWeight: 700}}>
+            🤖 AI Assistant
+          </Link>
         </div>
       </div>
 
-      {/* RIGHT: name + logout */}
+      {}
       <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
         <span style={{ fontWeight: 500, fontSize: "14px" }}>
           {user.full_name}

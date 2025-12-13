@@ -16,7 +16,7 @@ class UserLogin(BaseModel):
 
 
 class UserRead(BaseModel):
-    id: str                     # IMPORTANT: ObjectId converted to string
+    id: str                   
     full_name: str
     email: str
     role: UserRole
@@ -25,9 +25,7 @@ class UserRead(BaseModel):
     class Config:
         from_attributes = True 
         json_encoders={
-            # convert ObjectId to string automatically
-            # ONLY works with pydantic v2 style
-            # but good practice to include
+           
         } # Pydantic v2 replacement for orm_mode
 
 

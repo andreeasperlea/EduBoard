@@ -4,17 +4,12 @@ from app.models import User, UserRole
 from app.api.deps import get_current_user
 from app.schemas.whiteboard import WhiteboardRead, WhiteboardCreate
 
-router = APIRouter(prefix="/whiteboard", tags=["Whiteboard"])
+router = APIRouter(tags=["Whiteboard"])
 
 
-# --------------------
-# LIST WHITEBOARDS
-# --------------------
 @router.get("/")
 async def list_whiteboards(current_user: User = Depends(get_current_user)):
-    if current_user.role != UserRole.TEACHER:
-        raise HTTPException(403, "Only teachers can view whiteboards")
-
+   
     boards = await Whiteboard.find(
         Whiteboard.teacher_id == str(current_user.id)
     ).to_list()
@@ -31,16 +26,11 @@ async def list_whiteboards(current_user: User = Depends(get_current_user)):
 
 
 
-# --------------------
-# CREATE WHITEBOARD
-# --------------------
 @router.post("/", response_model=WhiteboardRead)
 async def create_whiteboard(payload: WhiteboardCreate, current_user: User = Depends(get_current_user)):
-    if current_user.role != UserRole.TEACHER:
-        raise HTTPException(403, "Only teachers can create whiteboards")
-
+    # Am scos restricția de rol.
     if not payload.name.strip():
-        raise HTTPException(400, "Whiteboard name cannot be empty")
+        raise HTTPException(400, "Name cannot be empty")
 
     board = Whiteboard(
         teacher_id=str(current_user.id),
@@ -57,14 +47,11 @@ async def create_whiteboard(payload: WhiteboardCreate, current_user: User = Depe
     }
 
 
-
-# --------------------
-# GET ONE WHITEBOARD
-# --------------------
 @router.get("/{board_id}", response_model=WhiteboardRead)
 async def get_whiteboard(board_id: str, current_user: User = Depends(get_current_user)):
     board = await Whiteboard.get(board_id)
-    if not board or board.teacher_id != str(current_user.id):
+ 
+    if not board:
         raise HTTPException(404, "Not found")
 
     return {
@@ -74,10 +61,6 @@ async def get_whiteboard(board_id: str, current_user: User = Depends(get_current
         "strokes": board.strokes
     }
 
-
-# --------------------
-# SAVE WHITEBOARD
-# --------------------
 @router.post("/{board_id}/save")
 async def save_whiteboard(
     board_id: str,
@@ -85,14 +68,13 @@ async def save_whiteboard(
     current_user: User = Depends(get_current_user)
 ):
     board = await Whiteboard.get(board_id)
-
-    if not board or board.teacher_id != str(current_user.id):
+    if not board:
         raise HTTPException(404, "Not found")
 
     board.strokes = data["strokes"]
     await board.save()
-
     return {"status": "saved"}
+
 
 @router.delete("/{board_id}")
 async def delete_whiteboard(board_id: str, current_user: User = Depends(get_current_user)):
