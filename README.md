@@ -1,12 +1,13 @@
 # EduBoard 
 
-**EduBoard** este o aplicație web modernă de tip **LMS (Learning Management System)**, concepută pentru a digitaliza și eficientiza interacțiunea dintre profesori și elevi. Platforma integrează unelte de colaborare vizuală (Whiteboard) și un asistent educațional bazat pe Inteligență Artificială (OpenAI).** Arhitectura Sistemului**
+**EduBoard** este o aplicație web modernă de tip **LMS (Learning Management System)**, concepută pentru a digitaliza și eficientiza interacțiunea dintre profesori și elevi. Platforma integrează unelte de colaborare vizuală (Whiteboard) și un asistent educațional bazat pe Inteligență Artificială (OpenAI). 
 
 
+**Arhitectura Sistemului**
 
 * **Frontend (Client):** Construit cu **React + Vite** (Single Page Application). Gestionează interfața cu utilizatorul și logica de afișare.
 * **Backend (Server):** Construit cu **Python FastAPI**. Gestionează logica din spatele platformei, autentificarea și comunicarea cu baza de date.
-* **Database:** **MongoDB **pentru stocarea flexibilă a datelor (documente JSON).
+* **Database:** **MongoDB** pentru stocarea flexibilă a datelor (documente JSON).
 * **AI Service:** Integrare cu **OpenAI API** prin intermediul backend-ului.
 
 
@@ -20,8 +21,8 @@
 * **React.js (v18)** - Librăria principală pentru UI.
 * **TypeScript** - Pentru tipizare statică și prevenirea erorilor.
 * **Vite** - Build tool performant pentru dezvoltare rapidă.
-* **React ** - Gestionarea rutelor și navigării.
-* **CSS ** - Stilizare
+* **React** - Gestionarea rutelor și navigării.
+* **CSS** - Stilizare
 
 
 ### **Backend (API & Server)**
@@ -35,15 +36,13 @@
 * **JWT (JSON Web Tokens)** - Autentificare securizată (Stateless).
 * **OpenAI SDK** - Integrarea inteligenței artificiale.
 
-** Baza de Date & Devops**
+**Baza de Date**
 
-
-
-* **MongoDB Atlas** - Bază de date NoSQL în cloud.
+* **MongoDB** - Bază de date NoSQL
 * **Uvicorn** - Server ASGI pentru rularea aplicației Python.
-* **Git & GitHub** - Versionare cod.
 
-** Funcționalități Implementate**
+
+**Funcționalități Implementate**
 
 
 ### **1. Autentificare & Securitate**
@@ -152,18 +151,16 @@ npm run dev
 4. Deschideți browserul la adresa: <code>[http://localhost:5173](http://localhost:5173)</code>
 
 
-## **Planuri de Viitor **
+## **Planuri de Viitor**
 
-Funcționalități planificate pentru versiunea finală
+Funcționalități planificate pentru versiunea finală:
 
+1.Posibilitatea ca elevii să încarce fișiere PDF/DOCX.
 
-    Posibilitatea ca elevii să încarce fișiere PDF/DOCX.
+2.WebSockets pentru ca studenții să vadă ce desenează profesorul în timp real (fără refresh).	
 
+3,Sistem de notare și calculare a mediilor.
 
-    WebSockets pentru ca studenții să vadă ce desenează profesorul în timp real (fără refresh).	
+4.Un AI mai interactiv și mai inteligent. 
 
-
-    Sistem de notare și calculare a mediilor.
-
-
-    Un AI mai interactiv și mai inteligent. 
+5.Etc...
