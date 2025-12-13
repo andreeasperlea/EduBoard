@@ -123,7 +123,7 @@ pip install -r requirements.txt
 3.Creați fișierul `.env` și adăugați configurările: \
 
 
-MONGODB_URL=mongodb+srv://user:parola@cluster.mongodb.net/eduboard
+MONGODB_URL=mongodb+srv:link to database
 
 SECRET_KEY=cheie_secret
 
