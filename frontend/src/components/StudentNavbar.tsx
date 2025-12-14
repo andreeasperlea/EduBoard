@@ -55,7 +55,7 @@ export default function StudentNavbar() {
           </Link>
 
           <Link to="/ai-assistant" style={{...linkStyle, color: "#6f42c1", fontWeight: 700}}>
-            🤖 AI Assistant
+            AI Assistant
           </Link>
         </div>
       </div>

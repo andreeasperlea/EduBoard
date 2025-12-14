@@ -64,7 +64,7 @@ export default function StudentDashboard() {
             onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
             onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            📚 My classes
+            My classes
           </button>
 
           {}
@@ -85,7 +85,7 @@ export default function StudentDashboard() {
             onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
             onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            🤖 AI Assistant
+            AI Assistant
           </button>
           
         </div>

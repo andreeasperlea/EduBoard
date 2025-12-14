@@ -69,169 +69,127 @@ const ClassDetails = () => {
     } catch (error) { alert("Connection error"); } finally { setLoadingInvite(false); }
   };
 
-  if (!classroom) return <div style={{padding: 40}}>Loading class details...</div>;
+  if (!classroom) return <div style={{padding: 20}}>Loading...</div>;
   
   const isTeacher = user?.role === 'teacher';
 
   return (
-    <div style={{ fontFamily: 'Inter, sans-serif', background: '#f8f9fa', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#fff', minHeight: '100vh' }}>
       
       {}
       {user?.role === 'teacher' ? <TeacherNavbar /> : <StudentNavbar />}
 
       {}
-      <div style={{ 
-          background: 'linear-gradient(135deg, #007bff 0%, #6610f2 100%)', 
-          padding: '40px 10%', 
-          color: 'white',
-          boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-      }}>
+      <div style={{ padding: '20px 40px', borderBottom: '1px solid #ddd', backgroundColor: '#f8f9fa' }}>
         <button 
           onClick={() => navigate('/classes')}
-          style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '5px 15px', borderRadius: '20px', cursor: 'pointer', marginBottom: '20px', backdropFilter: 'blur(5px)' }}
+          style={{ background: 'transparent', border: 'none', color: 'blue', cursor: 'pointer', marginBottom: '10px', fontSize: '14px', textDecoration: 'underline' }}
         >
-          ← Back to Classes
+          Back to Classes
         </button>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-                <h1 style={{ fontSize: '3rem', margin: 0, fontWeight: 800 }}>{classroom.name}</h1>
-                <p style={{ fontSize: '1.2rem', opacity: 0.9, marginTop: '10px' }}>{classroom.description}</p>
+                <h1 style={{ margin: 0, fontSize: '28px', color: '#333' }}>{classroom.name}</h1>
+                <p style={{ margin: '5px 0 0 0', color: '#666' }}>{classroom.description}</p>
             </div>
             
             {classroom.whiteboard_id && (
                 <button
                     onClick={() => navigate(`/teacher/whiteboard/${classroom.whiteboard_id}`)}
                     style={{
-                        padding: '12px 25px',
-                        background: 'white',
-                        color: '#6610f2',
+                        padding: '10px 20px',
+                        background: '#007bff',
+                        color: 'white',
                         border: 'none',
-                        borderRadius: '30px',
-                        fontWeight: 'bold',
+                        borderRadius: '4px',
                         cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', gap: '10px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                        transition: 'transform 0.2s'
+                        fontSize: '14px'
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    <span style={{fontSize: '20px'}}>🎨</span> Open Class Board
+                    Open Whiteboard
                 </button>
             )}
         </div>
       </div>
 
       {}
-      <div style={{ padding: '0 20px', paddingBottom: '40px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '30px', maxWidth: '1200px', margin: '30px auto' }}>
+      <div style={{ padding: '20px 40px', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
             
             {}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-                <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', overflow: 'hidden' }}>
-                    <div style={{ padding: '20px', borderBottom: '1px solid #eee', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#6610f2', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>T</div>
-                        <div>
-                            <div style={{ fontWeight: '600' }}>Class Announcement</div>
-                            <div style={{ fontSize: '12px', color: '#888' }}>Posted 2 hours ago</div>
-                        </div>
-                    </div>
-                    <div style={{ padding: '20px' }}>
-                        <p style={{ margin: 0, color: '#444', lineHeight: '1.6' }}>
-                             <strong>Midterm Exams Update:</strong><br/>
-                            The exam schedule has been finalized. Please check the "Materials" section below for the study guide PDF. Good luck preparing!
-                        </p>
-                    </div>
+            <div>
+                {}
+                <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px', marginBottom: '20px', background: '#fff' }}>
+                    <h3 style={{ marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Latest Announcement</h3>
+                    <p style={{ color: '#444', lineHeight: '1.5' }}>
+                        <strong>Anuturi importante:</strong><br/>
+                        Aici o sa punem textul pentru anunturi mai tarziu.
+                        Schimbam textul mai tarziu cand avem toata implementarea facuta.
+                    </p>
                 </div>
 
                 <div>
-                    <h3 style={{ color: '#444', marginBottom: '15px' }}> Recent Materials</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '15px' }}>
-                        <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #eee', textAlign: 'center', cursor: 'pointer', transition: 'box-shadow 0.2s' }}>
-                            <div style={{ fontSize: '40px', marginBottom: '10px' }}>📄</div>
-                            <div style={{ fontWeight: '600', fontSize: '14px', marginBottom: '5px' }}>Algebra Basics.pdf</div>
-                            <div style={{ fontSize: '12px', color: '#888' }}>Uploaded Yesterday</div>
+                    <h3 style={{ color: '#333' }}>Course Materials</h3>
+                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                        {/* Material Card 1 */}
+                        <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '15px', width: '200px', background: '#fff' }}>
+                            <div style={{ fontWeight: 'bold' }}>Curs_1.pdf</div>
+                            <div style={{ fontSize: '12px', color: '#888', marginTop: '5px' }}>Uploaded Yesterday</div>
                         </div>
 
-                        <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #eee', textAlign: 'center', cursor: 'pointer' }}>
-                            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🎥</div>
-                            <div style={{ fontWeight: '600', fontSize: '14px', marginBottom: '5px' }}>Week 3 Recording</div>
-                            <div style={{ fontSize: '12px', color: '#888' }}>YouTube Link</div>
+                        {}
+                        <div style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '15px', width: '200px', background: '#fff' }}>
+                            <div style={{ fontWeight: 'bold' }}>Tema_Lab.docx</div>
+                            <div style={{ fontSize: '12px', color: '#888', marginTop: '5px' }}>Link extern</div>
                         </div>
-
-                        {isTeacher && (
-                            <div style={{ border: '2px dashed #ddd', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', cursor: 'pointer', minHeight: '140px' }}>
-                                + Add Material
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
 
             {}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-                <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #e0e0e0', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                        <h4 style={{ margin: 0 }}>Upcoming</h4>
-                        <span style={{ fontSize: '12px', color: '#007bff', cursor: 'pointer' }}>View all</span>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <div style={{ background: '#ffeeba', color: '#856404', padding: '5px 10px', borderRadius: '6px', fontSize: '12px', height: 'fit-content', fontWeight: 'bold' }}>Tomorrow</div>
-                            <div>
-                                <div style={{ fontSize: '14px', fontWeight: '500' }}>Algebra Quiz 1</div>
-                                <div style={{ fontSize: '12px', color: '#888' }}>Due 11:59 PM</div>
-                            </div>
-                        </div>
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                             <div style={{ background: '#f8f9fa', color: '#666', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '6px', fontSize: '12px', height: 'fit-content' }}>Dec 24</div>
-                             <div>
-                                <div style={{ fontSize: '14px', fontWeight: '500' }}>Essay Draft</div>
-                                <div style={{ fontSize: '12px', color: '#888' }}>History</div>
-                            </div>
-                        </div>
-                    </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {}
+                <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px', background: '#f9f9f9' }}>
+                    <h4 style={{ margin: '0 0 10px 0' }}>Upcoming Deadlines</h4>
+                    <ul style={{ paddingLeft: '20px', margin: 0, fontSize: '14px' }}>
+                        <li style={{ marginBottom: '5px' }}>Quiz Tehnologii Web - MAINE</li>
+                        <li>PROIECT ALED (Dec 24)</li>
+                    </ul>
                 </div>
 
-                <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-                    <h4 style={{ margin: '0 0 15px 0' }}>Classmates ({students.length})</h4>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '300px', overflowY: 'auto' }}>
+                {}
+                <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px', background: '#fff' }}>
+                    <h4 style={{ margin: '0 0 10px 0' }}>Students ({students.length})</h4>
+                    <ul style={{ paddingLeft: '20px', margin: 0, maxHeight: '200px', overflowY: 'auto' }}>
                         {students.map(student => (
-                            <div key={student.id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#e9ecef', color: '#495057', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold' }}>
-                                    {student.full_name.charAt(0)}
-                                </div>
-                                <div style={{ fontSize: '14px' }}>{student.full_name}</div>
-                            </div>
+                            <li key={student.id} style={{ fontSize: '14px', marginBottom: '5px' }}>
+                                {student.full_name}
+                            </li>
                         ))}
-                        {students.length === 0 && <div style={{ color: '#888', fontStyle: 'italic', fontSize: '13px' }}>No students yet</div>}
-                    </div>
+                        {students.length === 0 && <li style={{color: '#999'}}>No students joined yet.</li>}
+                    </ul>
                 </div>
 
+                {}
                 {isTeacher && (
-                    <div style={{ background: 'black', color: 'white', padding: '20px', borderRadius: '12px' }}>
-                        <h4 style={{ margin: '0 0 10px 0', color: 'white' }}>Add Student</h4>
+                    <div style={{ border: '1px solid #333', borderRadius: '4px', padding: '15px', background: '#333', color: 'white' }}>
+                        <h4 style={{ margin: '0 0 10px 0' }}>Invite Student</h4>
                         <div style={{ display: 'flex', gap: '5px' }}>
                             <input 
                                 type="email" 
-                                placeholder="Email..." 
+                                placeholder="Student email..." 
                                 value={inviteEmail} 
                                 onChange={(e) => setInviteEmail(e.target.value)}
-                                style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '13px' }}
+                                style={{ flex: 1, padding: '5px' }}
                             />
-                            <button 
-                                onClick={handleInvite} 
-                                disabled={loadingInvite}
-                                style={{ background: '#007bff', color: 'white', border: 'none', borderRadius: '6px', padding: '0 10px', cursor: 'pointer', fontWeight: 'bold' }}
-                            >
-                                +
+                            <button onClick={handleInvite} disabled={loadingInvite}>
+                                Add
                             </button>
                         </div>
                     </div>
                 )}
             </div>
-        </div>
       </div>
     </div>
   );

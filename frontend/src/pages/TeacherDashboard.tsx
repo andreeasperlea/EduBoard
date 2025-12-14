@@ -54,7 +54,7 @@ export default function TeacherDashboard() {
               fontSize: "16px",
               fontWeight: "600",
               color: "#fff",
-              backgroundColor: "#007bff", // Blue color
+              backgroundColor: "#007bff", 
               border: "none",
               borderRadius: "8px",
               cursor: "pointer",
@@ -64,7 +64,7 @@ export default function TeacherDashboard() {
             onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#0056b3")}
             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#007bff")}
           >
-            📂 Manage Classes
+            Manage Classes
           </button>
 
           {}
@@ -84,7 +84,7 @@ export default function TeacherDashboard() {
             onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e0e0e0")}
             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f0f0f0")}
           >
-            ✏️ Go to Whiteboards
+             Go to Whiteboards
           </button>
 
           <button
