@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
+from typing import List, Optional
 
 class PointSchema(BaseModel):
     x: float
@@ -9,8 +9,15 @@ class StrokeSchema(BaseModel):
     points: List[PointSchema]
     color: str
     size: int
-    erase: bool | None = None
+    erase: Optional[bool] = None
 
+
+class WhiteboardCreate(BaseModel):
+    name: str
+
+class WhiteboardUpdate(BaseModel):
+
+    sheets: List[List[StrokeSchema]]
 
 class WhiteboardRead(BaseModel):
     id: str
@@ -18,8 +25,7 @@ class WhiteboardRead(BaseModel):
     name: str
     strokes: List[StrokeSchema] = []
 
+    sheets: List[List[StrokeSchema]] = Field(default_factory=lambda: [[]])
+
     class Config:
         from_attributes = True
-
-class WhiteboardCreate(BaseModel):
-    name: str

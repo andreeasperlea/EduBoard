@@ -1,4 +1,3 @@
-// src/hooks/useCurrentUser.ts
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import type { User } from "../types/user";

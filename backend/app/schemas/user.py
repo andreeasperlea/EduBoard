@@ -6,7 +6,7 @@ from app.models.user import UserRole
 class UserCreate(BaseModel):
     full_name: str
     email: str
-    role: UserRole   # enforce enum
+    role: UserRole 
     password: str
 
 
@@ -22,11 +22,13 @@ class UserRead(BaseModel):
     role: UserRole
     is_active: bool = True
 
+    avatar_color: str = "#FF80ED"
+
     class Config:
         from_attributes = True 
         json_encoders={
            
-        } # Pydantic v2 replacement for orm_mode
+        } 
 
 
 
@@ -40,3 +42,10 @@ class DashboardResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    avatar_color: Optional[str] = None
+

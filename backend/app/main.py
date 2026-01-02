@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1 import auth, dashboard, whiteboard, classes   # <-- ADD THIS
+from app.api.v1 import auth, dashboard, whiteboard, classes, attendance, assignments  
 from app.db.database import init_db
 from app.api.v1 import ai_assistant
 
@@ -28,3 +28,8 @@ app.include_router(whiteboard.router, prefix="/api/v1/whiteboards", tags=["white
 app.include_router(classes.router, prefix="/api/v1/classes", tags=["classes"])
 
 app.include_router(ai_assistant.router, prefix="/api/v1/ai", tags=["ai"])
+
+app.include_router(attendance.router, prefix="/api/v1/attendance", tags=["attendance"])
+
+app.include_router(assignments.router, prefix="/api/v1/assignments", tags=["assignments"])
+#adaugat rute pentru clasele noi adaugate

@@ -13,6 +13,10 @@ import ClassDetails from "./pages/ClassDetails";
 import AIAssistant from "./pages/AIAssistant";
 import LandingPage from "./pages/LandingPage";
 import LoadingScreen from "./components/LoadingScreen";
+
+import Profile from './pages/Profile';
+
+
 export default function App() {
 
   const [loading, setLoading] = useState(true);
@@ -103,6 +107,8 @@ export default function App() {
             </ProtectedRoute>
           } 
         />
+
+        <Route path="/profile" element={<Profile />} />
         
       </Routes>
     </BrowserRouter>

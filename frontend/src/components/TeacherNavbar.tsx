@@ -34,7 +34,6 @@ export default function TeacherNavbar() {
         boxSizing: "border-box",
       }}
     >
-      {}
       <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
         <h2 style={{ margin: 0, fontWeight: 700, fontSize: "22px" }}>
           EduBoard
@@ -45,7 +44,6 @@ export default function TeacherNavbar() {
             Home
           </Link>
           
-          {}
           <Link to="/classes" style={linkStyle}>
             Classes
           </Link>
@@ -54,18 +52,33 @@ export default function TeacherNavbar() {
             Whiteboards
           </Link>
 
-          {}
           <Link to="/ai-assistant" style={{...linkStyle, color: "#6f42c1", fontWeight: 700}}>
             AI Assistant
           </Link>
         </div>
       </div>
-
-      {}
       <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-        <span style={{ fontWeight: 500, fontSize: "14px" }}>
+        
+        <Link 
+            to="/profile" 
+            style={{
+              backgroundColor: "black",      
+              color: "white",                
+              padding: "12px 12px",          
+              fontSize: "12px",              
+              fontWeight: "bold",
+              borderRadius: "8px",          
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.15)", 
+              transition: "transform 0.1s ease"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderBottom = "1px solid #000"}
+            onMouseLeave={(e) => e.currentTarget.style.borderBottom = "1px solid transparent"}
+        >
           {user.full_name}
-        </span>
+        </Link>
+
         <button
           onClick={handleLogout}
           style={{

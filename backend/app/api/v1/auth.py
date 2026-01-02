@@ -1,7 +1,7 @@
 # app/api/v1/auth.py
 from fastapi import APIRouter, HTTPException, status, Depends
 from app.models import User
-from app.schemas.user import UserCreate, UserLogin, UserRead, Token
+from app.schemas.user import UserCreate, UserLogin, UserRead, Token, UserUpdate
 from app.utils.password import hash_password, verify_password
 from app.core.security import create_access_token
 from app.api.deps import get_current_user
@@ -61,5 +61,21 @@ async def login(user_in: UserLogin):
 @router.get("/me", response_model=UserRead)
 async def get_me(current_user: User = Depends(get_current_user)):
     data = current_user.model_dump()
+    data["id"] = str(current_user.id)
+    return UserRead(**data)
+
+
+#creat inca o functie pentru a da update la datele contului
+@router.patch("/me", response_model=UserRead)
+async def update_me(
+    user_update: UserUpdate,
+    current_user: User =  Depends(get_current_user)
+):
+    update_data = user_update.dict(exclude_unset=True)
+
+    if update_data:
+        await current_user.set(update_data)
+
+    data = current_user.dict()
     data["id"] = str(current_user.id)
     return UserRead(**data)

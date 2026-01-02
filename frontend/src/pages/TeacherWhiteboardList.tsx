@@ -9,13 +9,10 @@ export default function TeacherWhiteboardList() {
   const [name, setName] = useState("");
   const navigate = useNavigate(); 
 
-  // Load whiteboards
   useEffect(() => {
    
     api.get<Whiteboard[]>("/whiteboards").then((res) => setBoards(res.data));
   }, []);
-
-  // Create
   const createBoard = async () => {
     if (!name.trim()) {
       alert("Please enter a whiteboard name.");
@@ -56,8 +53,6 @@ export default function TeacherWhiteboardList() {
         <h1 style={{ fontSize: "32px", marginBottom: "20px" }}>
           Your Whiteboards
         </h1>
-
-        {}
         <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
           <input
             placeholder="Whiteboard name"
@@ -84,8 +79,6 @@ export default function TeacherWhiteboardList() {
             Create
           </button>
         </div>
-
-        {}
         {boards.length === 0 && <p>No whiteboards yet. Create one!</p>}
         
         {boards.map((b) => (

@@ -15,5 +15,8 @@ export interface Whiteboard {
   id: string;
   teacher_id: string;
   name: string;
-  strokes: Stroke[];
+  strokes?: Stroke[];
+  sheets?: Stroke[][]
 }
+
+
